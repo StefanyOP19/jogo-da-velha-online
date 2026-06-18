@@ -80,42 +80,93 @@ function winningCombo(b, player){
 }
 
 function bestMove(){
-  // Minimax to choose best move for AI
   const avail = board.map((v,i)=>v?null:i).filter(v=>v!==null);
+
+  // Busca vitória imediata
+  for(const i of avail){
+    board[i]=ai;
+    if(checkWin(board, ai)){
+      board[i]=null;
+      return i;
+    }
+    board[i]=null;
+  }
+
+  // Bloqueia vitória do humano
+  for(const i of avail){
+    board[i]=human;
+    if(checkWin(board, human)){
+      board[i]=null;
+      return i;
+    }
+    board[i]=null;
+  }
+
+  // Antigravity: movimentos menos previsíveis com pesos dinâmicos
+  const early = [4,0,2,6,8].filter(i=>board[i]===null);
+  if(avail.length >= 7 && early.length){
+    return early[Math.floor(Math.random() * early.length)];
+  }
+
+  const weights = [3,2,3,2,4,2,3,2,3];
   let bestScore = -Infinity;
   let move = null;
   for(const i of avail){
-    board[i]=ai;
-    const score = minimax(board,0,false);
-    board[i]=null;
-    if(score>bestScore){bestScore=score;move=i}
+    let score = weights[i];
+    score += lineBonus(i, ai) * 1.6;
+    score -= lineBonus(i, human) * 1.3;
+    score += forkPotential(i, ai) * 2.0;
+    score -= opponentThreat(i) * 1.4;
+    score += Math.random() * 1.2;
+    if(score > bestScore){
+      bestScore = score;
+      move = i;
+    }
   }
   return move;
 }
 
-function minimax(b, depth, isMaximizing){
-  if(winningCombo(b, ai)) return 10 - depth;
-  if(winningCombo(b, human)) return depth - 10;
-  if(b.every(Boolean)) return 0;
-
-  const avail = b.map((v,i)=>v?null:i).filter(v=>v!==null);
-  if(isMaximizing){
-    let best = -Infinity;
-    for(const i of avail){
-      b[i]=ai;
-      best = Math.max(best, minimax(b, depth+1, false));
-      b[i]=null;
+function lineBonus(index, player){
+  const lines = [
+    [0,1,2],[3,4,5],[6,7,8],
+    [0,3,6],[1,4,7],[2,5,8],
+    [0,4,8],[2,4,6]
+  ];
+  let bonus = 0;
+  for(const line of lines){
+    if(line.includes(index)){
+      const count = line.filter(i=>board[i]===player).length;
+      const empty = line.filter(i=>board[i]===null).length;
+      if(count && empty) bonus += count;
     }
-    return best;
-  } else {
-    let best = Infinity;
-    for(const i of avail){
-      b[i]=human;
-      best = Math.min(best, minimax(b, depth+1, true));
-      b[i]=null;
-    }
-    return best;
   }
+  return bonus;
+}
+
+function forkPotential(index, player){
+  const temp = board.slice();
+  temp[index] = player;
+  const avail = temp.map((v,i)=>v?null:i).filter(v=>v!==null);
+  let threats = 0;
+  for(const i of avail){
+    temp[i] = player;
+    if(winningCombo(temp, player)) threats++;
+    temp[i] = null;
+  }
+  return threats;
+}
+
+function opponentThreat(index){
+  const temp = board.slice();
+  temp[index] = ai;
+  const avail = temp.map((v,i)=>v?null:i).filter(v=>v!==null);
+  let threats = 0;
+  for(const i of avail){
+    temp[i] = human;
+    if(winningCombo(temp, human)) threats++;
+    temp[i] = null;
+  }
+  return threats;
 }
 
 function reset(startWithAI=false){
