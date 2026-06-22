@@ -1,0 +1,22 @@
+[
+  {
+    "name": "Gisele",
+    "role": "Analista",
+    "function": "analisar_estatisticas"
+  },
+  {
+    "name": "Jessica",
+    "role": "Oportunidades",
+    "function": "identificar_oportunidade"
+  },
+  {
+    "name": "Cleber",
+    "role": "Revisor",
+    "function": "revisar_consistencia"
+  },
+  {
+    "name": "Juliana",
+    "role": "Soluções",
+    "function": "concluir_solucao"
+  }
+]

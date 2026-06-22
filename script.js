@@ -2,6 +2,7 @@ const boardEl = document.getElementById('board');
 const statusEl = document.getElementById('status');
 const restartBtn = document.getElementById('restart');
 const newgameBtn = document.getElementById('newgame');
+const analysisContentEl = document.getElementById('analysis-content');
 
 let board = Array(9).fill(null); // null, 'X', 'O'
 const human = 'X';
@@ -63,10 +64,64 @@ async function sendHistory(record){
     await fetch('/agents/history', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(record)
+      body: JSON.stringify({
+        ...record,
+        players: {
+          X: 'Jogador',
+          O: 'Máquina Antigravity'
+        }
+      })
     });
   } catch (error) {
     console.error('Nao foi possivel enviar historico da partida:', error);
+  } finally {
+    refreshAnalysis();
+  }
+}
+
+function formatAnalysis(analysis){
+  if (!analysis || !analysis.stats) {
+    return 'Análise indisponível no momento.';
+  }
+
+  const { stats } = analysis;
+  const byAgent = stats.byAgent || {};
+  const ranking = Object.entries(byAgent)
+    .map(([name, data]) => `${name}: ${data.wins}V/${data.losses}D/${data.draws}E • taxa ${data.winRate}%`)
+    .join('\n');
+
+  const header = [
+    `Total de partidas: ${stats.totalGames ?? 0}`,
+    `Partidas processadas: ${stats.processedGames ?? 0}`,
+    `Partidas com fallback/ignoradas: ${stats.ignoredGames ?? 0}`,
+    stats.bestPerformer
+      ? `Melhor desempenho: ${stats.bestPerformer.name} (${stats.bestPerformer.winRate}%)`
+      : 'Melhor desempenho: dados insuficientes',
+  ].join('\n');
+
+  const warnings = Array.isArray(analysis.warnings) && analysis.warnings.length
+    ? `\n\nAvisos:\n- ${analysis.warnings.join('\n- ')}`
+    : '';
+
+  return `${header}\n\nDesempenho por agente:\n${ranking || 'Sem dados'}${warnings}`;
+}
+
+async function refreshAnalysis(){
+  if (!analysisContentEl) {
+    return;
+  }
+
+  try {
+    const response = await fetch('/agents/analysis');
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}`);
+    }
+
+    const analysis = await response.json();
+    analysisContentEl.textContent = formatAnalysis(analysis);
+  } catch (error) {
+    analysisContentEl.textContent = 'Falha ao carregar análise das partidas.';
+    console.error('Nao foi possivel carregar analise de partidas:', error);
   }
 }
 
@@ -203,3 +258,4 @@ newgameBtn.addEventListener('click', ()=>reset(true));
 
 // inicializa
 createBoard();
+refreshAnalysis();

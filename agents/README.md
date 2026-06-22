@@ -1,5 +1,10 @@
 Agentes de IA para análise do Jogo da Velha Web.
 
+Implantação automática:
+- Ao iniciar o servidor, os agentes são carregados automaticamente dos arquivos `.json` em `agents/` (exceto `game-history.json`).
+- Cada agente deve ter os campos: `name`, `role`, `function`.
+- Arquivos inválidos não interrompem o servidor: são ignorados com aviso e fallback.
+
 Endpoints:
   GET /agents/stats - estatísticas do histórico do jogo
   POST /agents/history - salva um registro de partida
@@ -34,11 +39,31 @@ Contrato de resposta (`GET /agents/analysis`):
   ],
   "stats": {
     "totalGames": 10,
+    "processedGames": 10,
+    "ignoredGames": 0,
     "wins": {
       "X": 6,
       "O": 4
     },
-    "bestWinner": "X"
-  }
+    "bestWinner": "X",
+    "byAgent": {
+      "Jogador": {
+        "games": 10,
+        "wins": 6,
+        "losses": 3,
+        "draws": 1,
+        "winRate": 60
+      }
+    },
+    "bestPerformer": {
+      "name": "Jogador",
+      "games": 10,
+      "wins": 6,
+      "losses": 3,
+      "draws": 1,
+      "winRate": 60
+    }
+  },
+  "warnings": []
 }
 ```
