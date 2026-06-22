@@ -1,34 +1,44 @@
-choco install gitchoco install git# Jogo da Velha Online
+# Jogo da Velha Online
 
-Um jogo da velha (tic-tac-toe) interativo onde você joga contra a máquina.
+Projeto web de Jogo da Velha com IA e agentes Node.js para analisar estatísticas de partidas.
 
-## 🎮 Características
+## Caracteristicas
 
-- Interface azul e laranja
-- IA inteligente usando algoritmo Minimax
-- Modo responsivo (funciona em desktop e mobile)
-- Botão para reiniciar e começar um novo jogo
-- Máquina nunca perde!
+- Jogo contra a maquina no navegador
+- Estatisticas de partidas jogadas
+- Registro de vencedor por partida
+- Analise por agentes: Gisele, Jessica, Cleber e Juliana
 
-## 🚀 Como jogar
+## Como executar
 
-1. Abra `index.html` em seu navegador
-2. Clique nas células para fazer sua jogada (você é **X**)
-3. A máquina (você é **O**) responde automaticamente
-4. Ganhe, perca ou empate — depois reinicie
+1. Instale dependencias:
 
-## 📁 Arquivos
+```bash
+npm install
+```
 
-- `index.html` - Estrutura da página
-- `style.css` - Tema azul e laranja
-- `script.js` - Lógica do jogo e IA
+2. Inicie o servidor:
 
-## 💡 Tecnologias
+```bash
+npm start
+```
 
-- HTML5
-- CSS3
-- JavaScript (Vanilla)
+3. Acesse no navegador:
 
-## 📜 Licença
+```text
+http://localhost:3000
+```
 
-MIT
+## Endpoints dos agentes
+
+- `GET /agents/stats`
+- `POST /agents/history`
+- `GET /agents/analysis`
+
+## Estrutura principal
+
+- `index.html`: interface do jogo
+- `style.css`: estilos
+- `script.js`: logica do jogo e envio do historico
+- `agents/server.js`: API Node.js dos agentes
+- `agents/game-history.json`: armazenamento do historico

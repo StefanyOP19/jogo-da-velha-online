@@ -54,6 +54,20 @@ function endGame(message){
       c.style.color = '#8a2b00';
     });
   }
+  const winner = message.includes('Você venceu') ? human : (message.includes('Máquina venceu') ? ai : 'Empate');
+  sendHistory({ winner, moves: board.slice(), date: new Date().toISOString() });
+}
+
+async function sendHistory(record){
+  try {
+    await fetch('/agents/history', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(record)
+    });
+  } catch (error) {
+    console.error('Nao foi possivel enviar historico da partida:', error);
+  }
 }
 
 function isTie(b){

@@ -238,24 +238,3 @@ Tempos:
 
 ### Segurança
 - ✅ Sem backend (seguro por padrão)
-- ✅ Sem armazenamento de dados (privacy-first)
-- ✅ HTTPS automático via GitHub Pages
-
-### Performance
-- Tempo de carregamento: ~100-200ms
-- Resposta da IA: ~200ms (delay intencional)
-- Sem lag em nenhum navegador testado
-
----
-
-## Agradecimentos
-
-- Design inspiration: Tema azul e laranja
-- IA Engine: Antigravity algorithm
-- Hosting: GitHub Pages
-- Framework: Vanilla JS (zero overhead)
-
----
-
-**Última atualização:** 2026-06-18
-

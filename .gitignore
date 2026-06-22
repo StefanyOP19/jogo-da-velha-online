@@ -1,0 +1,20 @@
+# VS Code
+.vscode/
+*.code-workspace
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Node
+node_modules/
+
+# Python venv
+.venv/
+
+# Logs
+*.log
+
+# Temp files
+temp_read_check.txt
+.agent-access.txt
