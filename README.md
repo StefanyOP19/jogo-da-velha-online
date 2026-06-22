@@ -35,6 +35,23 @@ http://localhost:3000
 - `POST /agents/history`
 - `GET /agents/analysis`
 
+## Implantacao automatica dos agentes
+
+- Na inicializacao do servidor, todos os arquivos `.json` em `agents/` (exceto `game-history.json`) sao carregados automaticamente.
+- Cada agente valido deve ter: `name`, `role`, `function`.
+- Nao e necessario editar codigo para registrar novos agentes: basta adicionar um JSON valido em `agents/`.
+- Em caso de arquivo invalido, o sistema ignora o item com aviso e segue disponivel com fallback.
+
+## Analise automatica de partidas
+
+- O front-end exibe a analise em tempo real abaixo do tabuleiro.
+- A analise inclui:
+  - total de partidas
+  - partidas processadas e com fallback
+  - vitorias/derrotas/empates por agente
+  - taxa de vitoria por agente
+  - agente com melhor desempenho
+
 ## Estrutura principal
 
 - `index.html`: interface do jogo

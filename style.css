@@ -22,6 +22,9 @@ h1{margin:0 0 6px;color:var(--blue)}
 button{padding:8px 12px;border-radius:8px;border:2px solid transparent;background:var(--orange);color:white;font-weight:600;cursor:pointer}
 button#restart{background:var(--light-blue);border-color:var(--blue)}
 button:hover{opacity:0.95}
+.analysis{margin-top:14px;text-align:left;width:100%}
+.analysis h2{margin:0 0 6px;color:var(--blue);font-size:16px}
+#analysis-content{margin:0;white-space:pre-wrap;background:#f5faff;border:1px solid #c7ddf0;border-radius:8px;padding:10px;min-height:90px;font-size:12px;line-height:1.45;color:#0b3b5d}
 .credits{margin-top:10px;font-size:12px;color:#405f7a}
 
 @media (max-width:420px){.container{width:320px}#board{width:280px;height:280px}}
